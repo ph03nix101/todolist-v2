@@ -1,39 +1,50 @@
 const bodyParser = require("body-parser");
-const express = require ("express");
+const express = require("express");
 const date = require(__dirname + "/date.js")
 
 const app = express()
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(express.static("public")); 
+app.use(bodyParser.urlencoded({
+    extended: true
+}))
+app.use(express.static("public"));
 
 let items = [];
 let workItems = []
 
-app.get("/", function(req,res){
+app.get("/", function (req, res) {
 
     let day = date();
 
-    res.render("list", {listTitle: day, newListItems: items});
+    res.render("list", {listTitle: day});
 
-}); 
+});
 
-app.post("/", (req,res)=>{
+
+//  app.post("/", (req,res)=>{
+
+//      let item = req.body.newItem;
+
+//      if(req.body.list ==="Work"){
+//          workItems.push(item);
+//          res.json(workItems)
+//      }
+// })
+
+
+app.post("/", (req, res) =>  {
 
     let item = req.body.newItem;
+    items.push(item);   
 
-    if(req.body.list ==="Work"){
-        workItems.push(item);
-        res.redirect("/work")
-    }else{
-        items.push(item);
-        res.redirect("/")
-    }
-
- 
 })
+
+app.get("/data", (req,res)=>{
+    res.json(items);
+})
+
 
 app.get("/work", (req,res) =>{
     res.render("list", {listTitle: "Work List", newListItems: workItems});
@@ -45,6 +56,6 @@ app.get("/about", (req,res) =>{
 
 
 
-app.listen(3000, function(){
+app.listen(3000, function () {
     console.log("Server started on port 3000");
 })

@@ -6,18 +6,35 @@
     </div>
 
     <div class="box">
-        <% for(var i = 0; i <newListItems.length; i++){ %>
         <div class="item">
-            <input type="checkbox">
-            <p><%= newListItems[i] %></p>
+            <p id="text"></p>
         </div>
-        <% } %>
 
         <form action="/" method="post" class="item">
             <input type="text" name="newItem" placeholder="New Item" autocomplete="off" required>
-            <button type="submit" name="list" value=<%= listTitle %>>+</button>
+            <button type="submit" name="list" id="button" onclick="loadDoc">+</button>
         </form>
     </div>
+
+    <script>
+        function loadDoc() {
+        
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                items = JSON.parse(this.response)
+                document.getElementById("text").innerHTML = function(){
+
+                    for(var i= 0, i <items.length, i++){
+                        task_el = document.createElement('div').classList.add('item');
+                        document.createElement('p')
+                        document.querySelector('p')= items[i]
+                };
+            }
+            }
+            xhttp.open("GET", "/data", true);
+            xhttp.send();
+        }
+    </script>
 
 
 </body>
